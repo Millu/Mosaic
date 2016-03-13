@@ -58,8 +58,27 @@ def propose_pairs(descripts_a, keypts_a, descripts_b, keypts_b):
             homogeneous form. 
     """
     # code here
+    # print descripts_a
+    # print keypts_a
+    # print "b: "
+    # print "descripts\n" ,descripts_b 
+    # print "keypairs\n", keypts_b
+    pair_pts_a = []
+    pair_pts_b = []
+    
+    for i in range(len(descripts_a)): 
+        temp = []
+        for j in range(len(descripts_b)):
+            ad = descripts_a[i] 
+            bd = descripts_b[j]                
+            dist = cv2.norm(ad,bd,cv2.NORM_HAMMING)
+            temp.append([dist, j])
 
-
+        temp = sorted(temp)
+        pair_pts_a.append(keypts_a[i])
+        pair_pts_b.append(keypts_b[temp[0][1]])
+    print "A: \n", pair_pts_a
+    print "B: \n", pair_pts_b
     return pair_pts_a, pair_pts_b
 
 # fill your in code here
