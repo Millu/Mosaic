@@ -98,8 +98,8 @@ def homog_dlt(ptsa, ptsb):
     a = []
     print ptsa
     for i in range(len(ptsa)):
-        u, v = ptsa[i, 0], ptsa[i, 1]
-        u_p, v_p = ptsb[i, 0], ptsb[i, 1]
+        u, v = ptsa[i][0], ptsa[i][1]
+        u_p, v_p = ptsb[i][0], ptsb[i][1]
         a.append([u, v, 1, 0, 0, 0, -u_p*u, -u_p*v, -u_p])
         a.append([0, 0, 0, u, v, 1, -v_p*u, -v_p*v, -v_p])
     a = np.asarray(a)
@@ -270,6 +270,19 @@ def main():
     if False:
         multi_pair_combine(0, 5)
 
-#if __name__ == "__main__":
-#    main()
+'''ptsa = [[223.94883728, 101.52348328, 1],
+        [174, 180, 1],
+        [446, 179, 1],
+        [347.04000854, 149.76000977, 1]]
+ptsb = [[349.36022949, 104.50946808, 1],
+        [303.84002686, 182.88000488, 1],
+        [580.80004883, 177.6000061, 1],
+        [475.20001221, 149.76000977, 1]]
+
+print 'ptsa: ' + str(ptsa)
+print 'ptsb: ' + str(ptsb)
+print 'h: ' + str(homog_dlt(ptsa, ptsb))'''
+
+if __name__ == "__main__":
+    main()
 
