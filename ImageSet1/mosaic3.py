@@ -58,7 +58,6 @@ def propose_pairs(descripts_a, keypts_a, descripts_b, keypts_b):
         pair_pts_b (list of N np.matrix of shape 3x1): List of N corresponding keypoints in 
             homogeneous form. 
     """
-    # code here
     pair_pts_a = []
     pair_pts_b = []
     
@@ -95,34 +94,21 @@ def homog_dlt(ptsa, ptsb):
     Returns:
         H (np.matrix of shape 3x3): Homography found using DLT.
     """
-    # # code here
-    # a = []
-    # print ptsa
-    # for i in range(len(ptsa)):
-    #     u, v = ptsa[i][0], ptsa[i][1]
-    #     u_p, v_p = ptsb[i][0], ptsb[i][1]
-    #     a.append([u, v, 1, 0, 0, 0, -u_p*u, -u_p*v, -u_p])
-    #     a.append([0, 0, 0, u, v, 1, -v_p*u, -v_p*v, -v_p])
-    # a = np.asarray(a)
-    # u, s, vt = np.linalg.svd(a)
-    # v = vt.T
-    # h = v[:,-1]
-    # res = [[h[0], h[1], h[2]], [h[3], h[4], h[5]], [h[6], h[7], h[8]]]
-    # H = np.asarray(res)
-    # return H
-    a = np.zeros((len(ptsa) * 2,9))
-    for x in range(0, len(ptsa)):
-        for y in range(0,3):
-            a.itemset((18 * x + y), -1 * ptsa.item(3 * x + y))
-            a.itemset((18 * x + y + 12), -1 * ptsa.item(3 * x + y))
-            a.itemset((18 * x + y + 6), ptsa.item(3 * x + y) * ptsb.item(3 * x))
-            a.itemset((18 * x + y + 15), ptsa.item(3 * x + y) * ptsb.item(3 * x + 1))
-    U, S, VT = np.linalg.svd(a)
-    V = VT.T
-    h = V[:,-1]
-    H = np.matrix([[h.item(0), h.item(1), h.item(2)],[h.item(3), h.item(4), h.item(5)], [h.item(6), h.item(7), h.item(8)]])
-
-    return H
+    # code here
+    a = []
+    print ptsa
+    for i in range(len(ptsa)):
+        u, v = ptsa[i][0], ptsa[i][1]
+        u_p, v_p = ptsb[i][0], ptsb[i][1]
+        a.append([u, v, 1, 0, 0, 0, -u_p*u, -u_p*v, -u_p])
+        a.append([0, 0, 0, u, v, 1, -v_p*u, -v_p*v, -v_p])
+    a = np.asarray(a)
+    u, s, vt = np.linalg.svd(a)
+    v = vt.T
+    h = v[:,-1]
+    res = [[h[0], h[1], h[2]], [h[3], h[4], h[5]], [h[6], h[7], h[8]]]
+    H = np.asarray(res)
+    return H
 
 # fill your in code here
 def homog_ransac(pair_pts_a, pair_pts_b):
@@ -144,7 +130,7 @@ def homog_ransac(pair_pts_a, pair_pts_b):
     best_H = None
     best_points = None
     best_inliers = None
-    threshold = 250
+    threshold = 3
     n = 1000
     for i in range(n):
         rands = random.sample(xrange(len(pair_pts_a)), 4)
@@ -199,7 +185,6 @@ def img_combine_homog(img_a, img_b, length_ab, width_ab):
     """Perspective warp and blend two images of nearby perspectives.
     """
     descripts_a, keypts_a, img_keypts_a = descript_keypt_extract(img_a)
-    print descripts_a
     descripts_b, keypts_b, img_keypts_b = descript_keypt_extract(img_b)
 
     if True:
@@ -314,20 +299,5 @@ def main():
     if False:
         multi_pair_combine(0, 5)
 
-'''ptsa = [[223.94883728, 101.52348328, 1],
-        [174, 180, 1],
-        [446, 179, 1],
-        [347.04000854, 149.76000977, 1]]
-ptsb = [[349.36022949, 104.50946808, 1],
-        [303.84002686, 182.88000488, 1],
-        [580.80004883, 177.6000061, 1],
-        [475.20001221, 149.76000977, 1]]
-
-print 'ptsa: ' + str(ptsa)
-print 'ptsb: ' + str(ptsb)
-print 'h: ' + str(homog_dlt(ptsa, ptsb))'''
-
-# if __name__ == "__main__":
-#     main()
-
-main()
+if __name__ == "__main__":
+    main()
