@@ -102,6 +102,7 @@ def homog_dlt(ptsa, ptsb):
         u_p, v_p = ptsb[i][0], ptsb[i][1]
         a.append([u, v, 1, 0, 0, 0, -u_p*u, -u_p*v, -u_p])
         a.append([0, 0, 0, u, v, 1, -v_p*u, -v_p*v, -v_p])
+    print a
     a = np.asarray(a)
     u, s, vt = np.linalg.svd(a)
     v = vt.T
