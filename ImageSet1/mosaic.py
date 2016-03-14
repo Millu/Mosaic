@@ -221,6 +221,9 @@ def rot_from_homog(H, K):
         R (np.matrix of shape 3x3): Rotation matrix from frame a to frame b
     """
     # code here
+    invK = np.linalg.inv(K)
+    mult = np.multiply(invK, H)
+    R = np.multiply(mult, K)
     return R
 
 
