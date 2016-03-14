@@ -239,6 +239,8 @@ def extract_y_angle(R):
         y_ang (float): angle in radians
     """
     # code here
+    c_2 = ((R.item((0,0)) ** 2) + (R.item((0,1)) ** 2)) ** .5
+    y_ang = math.atan2(-R.item((0,2)), c_2)
     return y_ang
 
 
