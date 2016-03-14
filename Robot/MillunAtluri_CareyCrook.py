@@ -7,8 +7,6 @@ def takePics():
     turnBy(5, "deg")
     print "1"
     pic1 = takePicture()
-    show(pic1)
-    print "here"
     savePicture(pic1, "pic1.jpg")
 
     turnBy(10, "deg")
@@ -32,20 +30,25 @@ def takePics():
     savePicture(pic5, "pic5.jpg")
 
     turnBy(30, "deg")
+    print "6"
     pic6 = takePicture()
     savePicture(pic6, "pic6.jpg")
 
-    turnBy(35, "deg")        
+    turnBy(35, "deg")  
+    print "7"      
     pic7 = takePicture()
     savePicture(pic7, "pic7.jpg")
 
     turnBy(40, "deg")
+    print "8"
     pic8 = takePicture()
     savePicture(pic8, "pic8.jpg")
 
     turnBy(45, "deg")
+    print "9"
     pic9 = takePicture()
     savePicture(pic9, "pic9.jpg")
+
     print "got here bish"
 
 takePics()
