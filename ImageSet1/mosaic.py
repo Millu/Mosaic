@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import random
 
 CAM_KX = 720.
 CAM_KY = CAM_KX
@@ -127,8 +128,33 @@ def homog_ransac(pair_pts_a, pair_pts_b):
             homogeneous form. 
     """
     # code here
+    best_H = None
+    best_points = None
+    best_inliers = None
+    threshold = 3
+    n = 1000
+    for i in range(n):
+        rands = random.sample(xrange(len(pair_pts_a)), 4)
+        cor_a = [pair_pts_a[rands[0]], pair_pts_a[rands[1]], pair_pts_a[rands[2]], pair_pts_a[rands[3]]]
+        cor_b = [pair_pts_b[rands[0]], pair_pts_b[rands[1]], pair_pts_b[rands[2]], pair_pts_b[rands[3]]]
+        inliers = []
+        H = homog_dlt(cor_a, cor_b)
+        for i in range(len(pair_pts_a)):
+            b = pair_pts_a[i]
+            b_p = pair_pts_b[i]
+            dist = cv2.norm(b, b_p,cv2.NORM_HAMMING)
+            if dist < threshold:
+                inliers.append((b, b_p))
+        if len(inliers) > len(best_inliers):
+            best_inliers = inliers
+            best_H = H
+            best_points = (cor_a, cor_b)
 
-    # H = homog_dlt(x,y)
+    best_inliers_a = []
+    best_inliers_b = []
+    for i in range(len(best_inliers)):
+        best_inliers_a.append(best_inliers[i][0])
+        best_inliers_b.append(best_inliers[i][1])
 
     return best_H, best_inliers_a, best_inliers_b
 
