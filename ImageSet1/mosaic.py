@@ -58,11 +58,6 @@ def propose_pairs(descripts_a, keypts_a, descripts_b, keypts_b):
             homogeneous form. 
     """
     # code here
-    # print descripts_a
-    # print keypts_a
-    # print "b: "
-    # print "descripts\n" ,descripts_b 
-    # print "keypairs\n", keypts_b
     pair_pts_a = []
     pair_pts_b = []
     
@@ -77,8 +72,9 @@ def propose_pairs(descripts_a, keypts_a, descripts_b, keypts_b):
         temp = sorted(temp)
         pair_pts_a.append(keypts_a[i])
         pair_pts_b.append(keypts_b[temp[0][1]])
-    print "A: \n", pair_pts_a
-    print "B: \n", pair_pts_b
+    #print "A: \n", pair_pts_a
+    #print "B: \n", pair_pts_b
+
     return pair_pts_a, pair_pts_b
 
 # fill your in code here
@@ -99,8 +95,19 @@ def homog_dlt(ptsa, ptsb):
         H (np.matrix of shape 3x3): Homography found using DLT.
     """
     # code here
-
-
+    a = []
+    print ptsa
+    for i in range(len(ptsa)):
+        u, v = ptsa[i, 0], ptsa[i, 1]
+        u_p, v_p = ptsb[i, 0], ptsb[i, 1]
+        a.append([u, v, 1, 0, 0, 0, -u_p*u, -u_p*v, -u_p])
+        a.append([0, 0, 0, u, v, 1, -v_p*u, -v_p*v, -v_p])
+    a = np.asarray(a)
+    u, s, vt = np.linalg.svd(a)
+    v = vt.T
+    h = v[:,-1]
+    res = [[h[0], h[1], h[2]], [h[3], h[4], h[5]], [h[6], h[7], h[8]]]
+    H = np.asarray(res)
     return H
 
 # fill your in code here
@@ -153,6 +160,7 @@ def img_combine_homog(img_a, img_b, length_ab, width_ab):
     """Perspective warp and blend two images of nearby perspectives.
     """
     descripts_a, keypts_a, img_keypts_a = descript_keypt_extract(img_a)
+    print descripts_a
     descripts_b, keypts_b, img_keypts_b = descript_keypt_extract(img_b)
 
     if True:
@@ -262,5 +270,6 @@ def main():
     if False:
         multi_pair_combine(0, 5)
 
-if __name__ == "__main__":
-    main()
+#if __name__ == "__main__":
+#    main()
+
