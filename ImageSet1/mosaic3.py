@@ -59,23 +59,45 @@ def propose_pairs(descripts_a, keypts_a, descripts_b, keypts_b):
         pair_pts_b (list of N np.matrix of shape 3x1): List of N corresponding keypoints in 
             homogeneous form. 
     """
-    pair_pts_a = []
-    pair_pts_b = []
+    # pair_pts_a = []
+    # pair_pts_b = []
     
-    for i in range(len(descripts_a)): 
-        temp = []
-        for j in range(len(descripts_b)):
-            ad = descripts_a[i] 
-            bd = descripts_b[j]                
-            dist = cv2.norm(ad,bd,cv2.NORM_HAMMING)
-            temp.append([dist, j])
+    # for i in range(len(descripts_a)): 
+    #     temp = []
+    #     for j in range(len(descripts_b)):
+    #         ad = descripts_a[i] 
+    #         bd = descripts_b[j]                
+    #         dist = cv2.norm(ad,bd,cv2.NORM_HAMMING)
+    #         temp.append([dist, j])
 
-        temp = sorted(temp)
-        pair_pts_a.append(keypts_a[i])
-        pair_pts_b.append(keypts_b[temp[0][1]])
-    #print "A: \n", pair_pts_a
-    #print "B: \n", pair_pts_b
+    #     temp = sorted(temp)
+    #     pair_pts_a.append(keypts_a[i])
+    #     pair_pts_b.append(keypts_b[temp[0][1]])
+    # #print "A: \n", pair_pts_a
+    # #print "B: \n", pair_pts_b
 
+    # return pair_pts_a, pair_pts_b
+    distances = list()
+    match_set = list()
+    pair_pts_a = list()
+    pair_pts_b = list()
+    print len(keypts_a)
+    print len(keypts_b)
+    for i in range(0, len(keypts_a)):
+        best_match = None
+        best_dist = np.inf
+        for j in range(0, len(keypts_b)):
+            dist = cv2.norm(descripts_a[i], descripts_b[j], cv2.NORM_HAMMING)
+            if dist < best_dist:
+                best_match = (dist, keypts_a[i], keypts_b[j])
+                best_dist = dist
+        match_set.append(best_match)
+    final = sorted(match_set, key=lambda sort: sort[0])
+    for x in range(len(descripts_a) / 10):
+        distances.append(final[x][0])
+        pair_pts_a.append(final[x][1])
+        pair_pts_b.append(final[x][2])
+    print len(match_set)
     return pair_pts_a, pair_pts_b
 
 # fill your in code here
@@ -132,7 +154,7 @@ def homog_ransac(pair_pts_a, pair_pts_b):
     best_H = None
     best_points = None
     best_inliers = None
-    threshold = 250
+    threshold = 1000
     n = 100
     print '136'
     print 'pair_pts_a: ' + str(pair_pts_a)
